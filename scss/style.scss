@@ -1,0 +1,141 @@
+@import url("https://fonts.googleapis.com/css2?family=Rubik:wght@300;400&display=swap");
+
+@mixin gradient($direction) {
+  background: linear-gradient($direction, #181818, transparent);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Rubik";
+  display: grid;
+  place-items: center;
+  height: 100vh;
+  background: linear-gradient(to right bottom, #000000, #292626);
+}
+
+.profile {
+  position: relative;
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  max-height: 450px;
+  max-width: 300px;
+  width: 90vw;
+  height: 90vh;
+  cursor: pointer;
+}
+
+// Lines Styles to form borders around the card
+.line {
+  position: absolute;
+  pointer-events: none;
+  background-color: #333;
+
+  &-1 {
+    width: calc(100% + 5px);
+    height: 5px;
+    @include gradient(to left);
+    top: -5px;
+    right: -5px;
+  }
+
+  &-2 {
+    height: calc(100% + 5px);
+    width: 5px;
+    @include gradient(to bottom);
+    top: -5px;
+    right: -5px;
+  }
+
+  &-3 {
+    width: calc(100% + 10px);
+    height: 5px;
+    @include gradient(to right);
+
+    bottom: -5px;
+    left: -5px;
+  }
+
+  &-4 {
+    height: calc(100% + 10px);
+    width: 5px;
+    @include gradient(to top);
+    bottom: -5px;
+    left: -5px;
+  }
+}
+
+.profile__img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+  overflow: hidden;
+
+  // Styles for the overlay on the image
+  &::after {
+    position: absolute;
+    content: "";
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, #000, rgba(0, 0, 0, 0.25));
+    opacity: 0;
+    transition: opacity 700ms cubic-bezier(0.165, 0.84, 0.44, 1) 300ms;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 2000ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  }
+}
+
+.profile__name {
+  z-index: 10;
+
+  span {
+    display: inline-block;
+    font-size: 3rem;
+    margin: 0 0.3rem;
+    color: #fff;
+    font-weight: 300;
+    transform: translateY(-25px) scale(4);
+    opacity: 0;
+    transition: all 200ms cubic-bezier(0.77, 0, 0.175, 1);
+
+    @for $i from 1 to 6 {
+      $d: 50;
+      &:nth-child(#{$i}) {
+        transition-delay: #{$i * $d + 200}ms;
+      }
+    }
+  }
+}
+
+.profile:hover {
+  .profile__name span {
+    transform: translateY(0) scale(1.5);
+    opacity: 1;
+  }
+
+  .profile__img::after {
+    transition: opacity 700ms cubic-bezier(0.165, 0.84, 0.44, 1);
+    opacity: 1;
+  }
+
+  .profile__img img {
+    transition: transform 1000ms cubic-bezier(0.165, 0.84, 0.44, 1);
+    transform: scale(1.4);
+  }
+}
